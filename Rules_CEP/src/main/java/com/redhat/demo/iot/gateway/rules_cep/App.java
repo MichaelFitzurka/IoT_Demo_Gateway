@@ -41,6 +41,13 @@ public class App
 	
 		CepServer cepServer = new CepServer();
 		
+		// Convert TextMessage to DataSet via jaxb unmarshalling
+		JAXBContext jaxbContext = JAXBContext.newInstance(DataSet.class);
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+		StringReader reader = null;
+		DataSet event = null;
+
 		while ( true ) {
 			messageFromQueue = consumer.run(20000);		
 			
@@ -48,12 +55,8 @@ public class App
 			
 			if ( messageFromQueue != null ) {
 				
-	            // Convert TextMessage to DataSet via jaxb unmarshalling
-	            JAXBContext jaxbContext = JAXBContext.newInstance(DataSet.class);
-	            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-	
-	            StringReader reader = new StringReader( messageFromQueue );
-	            DataSet event = (DataSet) unmarshaller.unmarshal(reader);
+	            reader = new StringReader( messageFromQueue );
+	            event = (DataSet) unmarshaller.unmarshal(reader);
 		
 	            event.setRequired(0);	    
 	         

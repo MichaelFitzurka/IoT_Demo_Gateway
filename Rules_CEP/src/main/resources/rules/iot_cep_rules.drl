@@ -4,7 +4,7 @@ import com.redhat.demo.iot.gateway.rules_cep.DataSet;
 
 declare DataSet
 	@role ( event )
-	@expires( 2d )
+	@expires( 2m )
 end
 	
 rule "FirstData"
@@ -26,7 +26,7 @@ end
 rule "Calculate Average"
 when
 	$dataset : DataSet( $id:deviceID )  from entry-point IOTStream
-    Number( $average : floatValue ) from accumulate( $data: DataSet( deviceID == $id, $payload:payload ) over window:time( 10m ) from entry-point IOTStream, 
+	Number( $average : floatValue ) from accumulate( $data: DataSet( deviceID == $id, $payload:payload ) over window:length( 100 ) from entry-point IOTStream, 
         average( $payload ) )
 then
 	$dataset.setAverage($average);

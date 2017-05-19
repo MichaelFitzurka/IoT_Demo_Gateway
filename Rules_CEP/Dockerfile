@@ -1,10 +1,10 @@
 FROM    psteiner/base
 
-MAINTAINER psteiner <psteiner@redhat.com>
+LABEL maintainer "psteiner <psteiner@redhat.com>"
 
 USER root
 
-ENV APPL rules_cep-jar-with-dependencies.jar
+ENV APPL=rules_cep-jar-with-dependencies.jar
 
 # transfer run-script
 ADD Docker_Files/scripts/run.sh $HOME/
@@ -18,8 +18,6 @@ USER psteiner
 WORKDIR $HOME/
 
 CMD $HOME/run.sh
-
-
 
 # Build command -> docker build --rm -t workspace_iotdatacentermonitor .
 # run command -> docker run -h iotcontrollerrouter -d workspacefuse_iotdatacentermonitor

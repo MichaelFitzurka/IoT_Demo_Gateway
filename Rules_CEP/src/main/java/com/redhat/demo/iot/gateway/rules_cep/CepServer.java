@@ -19,6 +19,9 @@ public class CepServer {
     private KieContainer 	kieContainer;
     private KieSession 		kieSession;
     
+    private SessionPseudoClock pseudoClock;
+    private EntryPoint ep;
+    
     public CepServer() {
     	initKieSession();
     }
@@ -32,25 +35,25 @@ public class CepServer {
 
 		// Initializing KieSession.
 		kieSession = kieContainer.newKieSession();
+
+		SessionClock clock = kieSession.getSessionClock();
+		
+		pseudoClock = (SessionPseudoClock) clock;
+		ep = kieSession.getEntryPoint(CEP_STREAM);
     }
     
     public DataSet insert( DataSet event ) {
-		SessionClock clock = kieSession.getSessionClock();
-	
-		SessionPseudoClock pseudoClock = (SessionPseudoClock) clock;
-		EntryPoint ep = kieSession.getEntryPoint(CEP_STREAM);
-
 		// First insert the fact
-		FactHandle factHandle = ep.insert(event);
+		ep.insert(event);
 		
 		// Now let's fire the rules
 		kieSession.fireAllRules();
 
 		// And then advance the clock
 		// We only need to advance the time when dealing with Events. Our facts don't have timestamps.
-		long advanceTime = 100;	// ?? need to make this more meaningfull
+		// long advanceTime = 100;	// ?? need to make this more meaningfull
 
-		pseudoClock.advanceTime(advanceTime, TimeUnit.MILLISECONDS);
+		pseudoClock.advanceTime(100l, TimeUnit.MILLISECONDS);
 		
 		return event;
 	}

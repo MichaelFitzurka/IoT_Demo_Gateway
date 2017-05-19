@@ -25,8 +25,13 @@ public class Producer {
 	 private String brokerURL	="";
 	 private String uid			= "";
 	 private String passwd		= "";
+	 
+	 private JAXBContext dataSetContext;
+	 private Marshaller dataSetMarshaller;
+	 private StringWriter sw = new StringWriter();
+	 private Message message;
  
-	 public Producer(String queueName, String brokerURL, String uid, String passwd) throws JMSException
+	 public Producer(String queueName, String brokerURL, String uid, String passwd) throws JMSException, JAXBException
 	 {
 		this.queueName 	= queueName;
 		this.brokerURL 	= brokerURL;
@@ -34,6 +39,9 @@ public class Producer {
 		this.passwd		= passwd;
 		 
 		connect(queueName, brokerURL, uid, passwd);
+
+	 	dataSetContext = JAXBContext.newInstance(DataSet.class);
+	 	dataSetMarshaller = dataSetContext.createMarshaller();
 	 }
 	 
 	 public void connect(String queueName, String brokerURL, String uid, String passwd) {
@@ -54,26 +62,21 @@ public class Producer {
  
 	 public void run(DataSet data) {
 		 // Convert message to XML
-         String result;
-         StringWriter sw = new StringWriter();
+		 sw.getBuffer().setLength(0);
          
-         try {
-             JAXBContext dataSetContext = JAXBContext.newInstance(DataSet.class);
-             Marshaller dataSetMarshaller = dataSetContext.createMarshaller();
-             dataSetMarshaller.marshal(data, sw);
-             result = sw.toString();
-         } catch (JAXBException e) {
-             throw new RuntimeException(e);
-         }
+	 	 try {
+	 	 	 dataSetMarshaller.marshal(data, sw);
+	 	 } catch (JAXBException e) {
+	 	 	 throw new RuntimeException(e);
+	 	 }
          
-         run(result);
-         
+	 	 run(sw.toString());
+
 	 }
 	 
 	 public void run(String data)
 	 {
 		
-        Message message;
 		try {
 			message = session.createTextMessage( data );
 			System.out.println("Sending " + data);

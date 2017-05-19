@@ -45,7 +45,7 @@
   
 	  <!-- Route from local MQTT-Broker to remote JMS Broker in Datacenter -->
 	  <route id="messagesFromSensor">
-	    <from uri="mqtt:mqtt.temp.receiver?host=tcp://localhost:1883&amp;subscribeTopicNames=iotdemo/#/#&amp;userName=admin&amp;password=change12_me"/>
+	    <from uri="mqtt:mqtt.temp.receiver?host=tcp://localhost:1883&amp;subscribeTopicNames=iotdemo/#/#&amp;connectWaitInSeconds=600&amp;userName=admin&amp;password=change12_me"/>
 	    <bean ref="myHelper" method="enhanceMessage" beanType="com.redhat.demo.smart_gateway.MyHelper"/>
 	    <unmarshal ref="bindyDataFormat"/>
 	    <convertBodyTo type="java.lang.String"/>
@@ -55,7 +55,7 @@
 	  <route id="messagesFromDatacenter">
 	    <from uri="activemqDatacener:queue:message.back.to.gateway"/>
 	    <log message="Received message from Datacenter = ${body}"/>
-	    <to uri="mqtt:mqtt.temp.recevier?host=tcp://localhost:1883&amp;publishTopicName=iotdemocommand/light&amp;userName=admin&amp;password=change12_me"/>
+	    <to uri="mqtt:mqtt.temp.recevier?host=tcp://localhost:1883&amp;publishTopicName=iotdemocommand/light&amp;connectWaitInSeconds=600&amp;userName=admin&amp;password=change12_me"/>
 	  </route>
 	</camelContext>
 

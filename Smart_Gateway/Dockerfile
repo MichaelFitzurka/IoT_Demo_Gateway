@@ -1,11 +1,11 @@
 FROM    psteiner/fuse
 
-MAINTAINER psteiner <psteiner@redhat.com>
+LABEL maintainer "psteiner <psteiner@redhat.com>"
 
 USER root
 
-ENV BUNDLE_NAME smart_gateway-1.0.0.jar
-ENV BROKER_NAME smartgateway
+ENV BUNDLE_NAME=smart_gateway-1.0.0.jar \
+    BROKER_NAME=smartgateway
 
 # copy required ( or not ) configurations
 ADD Docker_Files/config/activemq.xml $HOME/tmp/

@@ -10,7 +10,7 @@ smartgateway:
                 - "61616:61616"
                 - "1883:1883"
         environment:
-                - DATACENTER_JMS_BROKER_URL=tcp://192.168.178.97:61616
+                - DATACENTER_JMS_BROKER_URL=tcp://10.42.0.1:61616
                 - GATEWAY_JMS_BROKER_URL=tcp://localhost:61616
                 - BROKER_ADMIN_UID=admin
                 - BROKER_ADMIN_PASSWD=change12_me
@@ -30,7 +30,7 @@ rulescep:
                - smartgateway
       environment:
                - SOURCE_AMQ_BROKER=tcp://smartgateway:61616
-               - TARGET_AMQ_BROKER=tcp://192.168.178.97:61616
+               - TARGET_AMQ_BROKER=tcp://10.42.0.1:61616
                - SOURCE_QUEUE=message.to.rules_cep
                - TARGET_QUEUE=message.to.datacenter
                - BROKER_ADMIN_UID=admin
