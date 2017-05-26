@@ -99,6 +99,7 @@ $ sudo apt-get install tightvncserver
 $ vncserver :1
 $ vncserver -kill :1
 ```
+---
 * Get VNCServer to start on boot:
 ```sh
 $ sudo vi ~/.config/autostart/tightvnc.desktop
@@ -110,6 +111,7 @@ Name=TightVNC
 Exec=vncserver :1 -geometry 1280x800 -depth 24
 StartupNotify=false
 ```
+---
 * Fix Cursor:
 ```sh
 $ sudo vi ~/.vnc/xstartup
