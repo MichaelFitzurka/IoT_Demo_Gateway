@@ -23,7 +23,7 @@ $ sudo raspi-config
 ```
 * Change password: `<password>`
 * Change locale: `en_US UTF-8`
-* Change Timesone: `US Eastern`
+* Change Timezone: `US Eastern`
 * Change Wi-fi Country: `US`
 * Enable Interfaces: `SSH` and `VNC`
 ---
@@ -33,7 +33,9 @@ $ sudo raspi-config
 ```sh
 $ sudo vi /etc/dhcpcd.conf
 ```
+Add:
 ```
+
 # define static profile eth0
 profile static_eth0
 static ip_address=10.42.0.3/24
@@ -59,7 +61,7 @@ $ sudo reboot
 ### Continue Pi Setup (Headless)
 * On laptop: (may need to remove 10.42.0.2 from known hosts)
 ```sh
-$ sudo vi /home/michael.fitzurka/.ssh/known_hosts
+$ sudo vi ~/.ssh/known_hosts
 ```
 * Continue on laptop:
 ```sh
@@ -104,6 +106,7 @@ $ vncserver -kill :1
 ```sh
 $ sudo vi ~/.config/autostart/tightvnc.desktop
 ```
+Create with:
 ```
 [Desktop Entry]
 Type=Application
@@ -193,6 +196,7 @@ $ sudo update-alternatives --set javac /opt/jdk1.8.0_131/bin/javac
 $ sudo tar -zxvf apache-maven-3.5.0-bin.tar.gz -C /opt
 $ sudo vi /etc/profile.d/maven.sh
 ```
+Create with:
 ```
 export M2_HOME=/opt/apache-maven-3.5.0
 export PATH=$PATH:$M2_HOME/bin
